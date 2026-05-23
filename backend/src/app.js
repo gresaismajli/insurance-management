@@ -3,6 +3,7 @@ const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
 const authRoutes = require('./routes/authRoutes');
+const clientRoutes = require('./routes/clientRoutes');
 const databaseRoutes = require('./routes/databaseRoutes');
 
 const app = express();
@@ -13,6 +14,7 @@ app.use(express.json());
 app.use(morgan('dev'));
 
 app.use('/api/auth', authRoutes);
+app.use('/api/clients', clientRoutes);
 app.use('/api', databaseRoutes);
 
 app.get('/api/health', (req, res) => {
