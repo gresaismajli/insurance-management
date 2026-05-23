@@ -1,13 +1,38 @@
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+
+import AppLayout from './components/AppLayout';
+import ProtectedRoute from './components/ProtectedRoute';
+import ClaimsPage from './pages/ClaimsPage';
+import ClientsPage from './pages/ClientsPage';
+import DashboardPage from './pages/DashboardPage';
+import InsuranceTypesPage from './pages/InsuranceTypesPage';
+import LoginPage from './pages/LoginPage';
+import PaymentsPage from './pages/PaymentsPage';
+import PoliciesPage from './pages/PoliciesPage';
+
 function App() {
   return (
-    <main className="app-shell">
-      <section className="container py-5">
-        <h1 className="h3 mb-3">Insurance Management System</h1>
-        <p className="text-secondary mb-0">
-          Project foundation is ready. Next step: database design.
-        </p>
-      </section>
-    </main>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/login" element={<LoginPage />} />
+        <Route
+          path="/"
+          element={
+            <ProtectedRoute>
+              <AppLayout />
+            </ProtectedRoute>
+          }
+        >
+          <Route index element={<DashboardPage />} />
+          <Route path="clients" element={<ClientsPage />} />
+          <Route path="insurance-types" element={<InsuranceTypesPage />} />
+          <Route path="policies" element={<PoliciesPage />} />
+          <Route path="claims" element={<ClaimsPage />} />
+          <Route path="payments" element={<PaymentsPage />} />
+        </Route>
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
