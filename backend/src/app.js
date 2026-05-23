@@ -7,6 +7,7 @@ const claimRoutes = require('./routes/claimRoutes');
 const clientRoutes = require('./routes/clientRoutes');
 const databaseRoutes = require('./routes/databaseRoutes');
 const insuranceTypeRoutes = require('./routes/insuranceTypeRoutes');
+const paymentRoutes = require('./routes/paymentRoutes');
 const policyRoutes = require('./routes/policyRoutes');
 
 const app = express();
@@ -20,6 +21,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/claims', claimRoutes);
 app.use('/api/clients', clientRoutes);
 app.use('/api/insurance-types', insuranceTypeRoutes);
+app.use('/api/payments', paymentRoutes);
 app.use('/api/policies', policyRoutes);
 app.use('/api', databaseRoutes);
 
