@@ -5,6 +5,7 @@ const morgan = require('morgan');
 const authRoutes = require('./routes/authRoutes');
 const clientRoutes = require('./routes/clientRoutes');
 const databaseRoutes = require('./routes/databaseRoutes');
+const insuranceTypeRoutes = require('./routes/insuranceTypeRoutes');
 
 const app = express();
 
@@ -15,6 +16,7 @@ app.use(morgan('dev'));
 
 app.use('/api/auth', authRoutes);
 app.use('/api/clients', clientRoutes);
+app.use('/api/insurance-types', insuranceTypeRoutes);
 app.use('/api', databaseRoutes);
 
 app.get('/api/health', (req, res) => {
