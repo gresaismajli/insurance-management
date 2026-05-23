@@ -17,5 +17,18 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-module.exports = app;
+app.use((req, res) => {
+  res.status(404).json({
+    message: 'Route not found'
+  });
+});
 
+app.use((error, req, res, next) => {
+  console.error(error);
+
+  res.status(500).json({
+    message: 'Internal server error'
+  });
+});
+
+module.exports = app;
