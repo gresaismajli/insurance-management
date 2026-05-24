@@ -152,6 +152,12 @@ function PoliciesPage() {
     loadPolicies(search, status);
   }
 
+  function clearFilters() {
+    setSearch('');
+    setStatus('');
+    loadPolicies('', '');
+  }
+
   return (
     <>
       <PageHeader title="Policies">
@@ -183,6 +189,9 @@ function PoliciesPage() {
           </select>
           <button className="btn btn-outline-primary" type="submit">
             Filter
+          </button>
+          <button className="btn btn-outline-secondary" onClick={clearFilters} type="button">
+            Reset
           </button>
         </form>
 
@@ -395,4 +404,3 @@ function PoliciesPage() {
 }
 
 export default PoliciesPage;
-

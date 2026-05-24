@@ -145,6 +145,12 @@ function ClaimsPage() {
     loadClaims(search, status);
   }
 
+  function clearFilters() {
+    setSearch('');
+    setStatus('');
+    loadClaims('', '');
+  }
+
   return (
     <>
       <PageHeader title="Claims">
@@ -178,6 +184,9 @@ function ClaimsPage() {
           </select>
           <button className="btn btn-outline-primary" type="submit">
             Filter
+          </button>
+          <button className="btn btn-outline-secondary" onClick={clearFilters} type="button">
+            Reset
           </button>
         </form>
 
@@ -371,4 +380,3 @@ function ClaimsPage() {
 }
 
 export default ClaimsPage;
-

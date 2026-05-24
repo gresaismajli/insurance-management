@@ -142,6 +142,12 @@ function PaymentsPage() {
     loadPayments(search, status);
   }
 
+  function clearFilters() {
+    setSearch('');
+    setStatus('');
+    loadPayments('', '');
+  }
+
   return (
     <>
       <PageHeader title="Payments">
@@ -173,6 +179,9 @@ function PaymentsPage() {
           </select>
           <button className="btn btn-outline-primary" type="submit">
             Filter
+          </button>
+          <button className="btn btn-outline-secondary" onClick={clearFilters} type="button">
+            Reset
           </button>
         </form>
 
@@ -350,4 +359,3 @@ function PaymentsPage() {
 }
 
 export default PaymentsPage;
-

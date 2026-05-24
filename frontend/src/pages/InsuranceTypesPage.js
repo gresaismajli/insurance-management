@@ -126,6 +126,11 @@ function InsuranceTypesPage() {
     loadInsuranceTypes(search);
   }
 
+  function clearSearch() {
+    setSearch('');
+    loadInsuranceTypes('');
+  }
+
   return (
     <>
       <PageHeader title="Insurance Types">
@@ -147,6 +152,9 @@ function InsuranceTypesPage() {
           />
           <button className="btn btn-outline-primary" type="submit">
             Search
+          </button>
+          <button className="btn btn-outline-secondary" onClick={clearSearch} type="button">
+            Reset
           </button>
         </form>
 
@@ -283,4 +291,3 @@ function InsuranceTypesPage() {
 }
 
 export default InsuranceTypesPage;
-

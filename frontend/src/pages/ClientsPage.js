@@ -111,6 +111,11 @@ function ClientsPage() {
     loadClients(search);
   }
 
+  function clearSearch() {
+    setSearch('');
+    loadClients('');
+  }
+
   return (
     <>
       <PageHeader title="Clients">
@@ -132,6 +137,9 @@ function ClientsPage() {
           />
           <button className="btn btn-outline-primary" type="submit">
             Search
+          </button>
+          <button className="btn btn-outline-secondary" onClick={clearSearch} type="button">
+            Reset
           </button>
         </form>
 
@@ -307,4 +315,3 @@ function ClientsPage() {
 }
 
 export default ClientsPage;
-
