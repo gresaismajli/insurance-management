@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { getAccessToken } from '../utils/authStorage';
+import { clearTokens, getAccessToken } from '../utils/authStorage';
 
 const httpClient = axios.create({
   baseURL: process.env.REACT_APP_API_URL || 'http://localhost:5000/api'
@@ -16,5 +16,15 @@ httpClient.interceptors.request.use((config) => {
   return config;
 });
 
-export default httpClient;
+httpClient.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      clearTokens();
+    }
 
+    return Promise.reject(error);
+  }
+);
+
+export default httpClient;

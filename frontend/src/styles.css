@@ -138,6 +138,13 @@ body {
   padding: 24px;
 }
 
+.route-loading {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  background: #eef2f7;
+}
+
 .login-panel {
   width: min(420px, 100%);
   padding: 28px;
