@@ -1,6 +1,7 @@
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 
-import { clearTokens } from '../utils/authStorage';
+import httpClient from '../api/httpClient';
+import { clearTokens, getRefreshToken } from '../utils/authStorage';
 
 const navItems = [
   { to: '/', label: 'Dashboard', end: true },
@@ -14,7 +15,17 @@ const navItems = [
 function AppLayout() {
   const navigate = useNavigate();
 
-  function handleLogout() {
+  async function handleLogout() {
+    const refreshToken = getRefreshToken();
+
+    if (refreshToken) {
+      try {
+        await httpClient.post('/auth/logout', { refreshToken });
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
     clearTokens();
     navigate('/login', { replace: true });
   }
@@ -59,4 +70,3 @@ function AppLayout() {
 }
 
 export default AppLayout;
-

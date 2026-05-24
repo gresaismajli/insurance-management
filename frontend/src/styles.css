@@ -148,6 +148,12 @@ body {
   margin-bottom: 24px;
 }
 
+.auth-switch {
+  color: #64748b;
+  margin: 18px 0 0;
+  text-align: center;
+}
+
 @media (max-width: 900px) {
   .app-shell {
     display: block;
