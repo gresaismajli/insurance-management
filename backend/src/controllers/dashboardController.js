@@ -45,6 +45,21 @@ async function getSummary(req, res, next) {
        ORDER BY payments.created_at DESC
        LIMIT 5`
     );
+    const [policyStatusRows] = await pool.query(
+      `SELECT status, COUNT(*) AS total
+       FROM policies
+       GROUP BY status`
+    );
+    const [claimStatusRows] = await pool.query(
+      `SELECT status, COUNT(*) AS total
+       FROM claims
+       GROUP BY status`
+    );
+    const [paymentStatusRows] = await pool.query(
+      `SELECT status, COUNT(*) AS total
+       FROM payments
+       GROUP BY status`
+    );
 
     res.json({
       stats: {
@@ -71,7 +86,21 @@ async function getSummary(req, res, next) {
         clientName: payment.client_name,
         amount: Number(payment.amount),
         status: payment.status
-      }))
+      })),
+      charts: {
+        policyStatuses: policyStatusRows.map((row) => ({
+          label: row.status,
+          value: Number(row.total)
+        })),
+        claimStatuses: claimStatusRows.map((row) => ({
+          label: row.status,
+          value: Number(row.total)
+        })),
+        paymentStatuses: paymentStatusRows.map((row) => ({
+          label: row.status,
+          value: Number(row.total)
+        }))
+      }
     });
   } catch (error) {
     next(error);
@@ -81,4 +110,3 @@ async function getSummary(req, res, next) {
 module.exports = {
   getSummary
 };
-

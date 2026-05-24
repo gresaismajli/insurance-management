@@ -12,7 +12,12 @@ const emptyDashboard = {
     completedPaymentAmount: 0
   },
   recentClaims: [],
-  recentPayments: []
+  recentPayments: [],
+  charts: {
+    policyStatuses: [],
+    claimStatuses: [],
+    paymentStatuses: []
+  }
 };
 
 function formatCurrency(value) {
@@ -54,6 +59,36 @@ function DashboardPage() {
     }
   ];
 
+  function renderChart(title, items) {
+    const maxValue = Math.max(...items.map((item) => item.value), 1);
+
+    return (
+      <article className="panel">
+        <h2 className="panel-title">{title}</h2>
+        {items.length === 0 ? (
+          <p className="text-secondary mb-0">No data yet.</p>
+        ) : (
+          <div className="chart-list">
+            {items.map((item) => (
+              <div className="chart-row" key={item.label}>
+                <div className="chart-row-label">
+                  <span>{item.label}</span>
+                  <strong>{item.value}</strong>
+                </div>
+                <div className="chart-track">
+                  <div
+                    className="chart-fill"
+                    style={{ width: `${(item.value / maxValue) * 100}%` }}
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </article>
+    );
+  }
+
   return (
     <>
       <PageHeader title="Dashboard" />
@@ -67,6 +102,12 @@ function DashboardPage() {
             <strong>{isLoading ? '...' : stat.value}</strong>
           </article>
         ))}
+      </section>
+
+      <section className="dashboard-grid mt-4">
+        {renderChart('Policy Statuses', dashboard.charts.policyStatuses)}
+        {renderChart('Claim Statuses', dashboard.charts.claimStatuses)}
+        {renderChart('Payment Statuses', dashboard.charts.paymentStatuses)}
       </section>
 
       <section className="dashboard-grid mt-4">
@@ -143,4 +184,3 @@ function DashboardPage() {
 }
 
 export default DashboardPage;
-
