@@ -4,12 +4,12 @@ import httpClient from '../api/httpClient';
 import { clearTokens, getRefreshToken } from '../utils/authStorage';
 
 const navItems = [
-  { to: '/', label: 'Dashboard', end: true },
-  { to: '/clients', label: 'Clients' },
-  { to: '/insurance-types', label: 'Insurance Types' },
-  { to: '/policies', label: 'Policies' },
-  { to: '/claims', label: 'Claims' },
-  { to: '/payments', label: 'Payments' }
+  { to: '/', label: 'Dashboard', icon: 'DB', end: true },
+  { to: '/clients', label: 'Clients', icon: 'CL' },
+  { to: '/insurance-types', label: 'Insurance Types', icon: 'IT' },
+  { to: '/policies', label: 'Policies', icon: 'PO' },
+  { to: '/claims', label: 'Claims', icon: 'CA' },
+  { to: '/payments', label: 'Payments', icon: 'PY' }
 ];
 
 function AppLayout() {
@@ -33,7 +33,13 @@ function AppLayout() {
   return (
     <div className="app-shell">
       <aside className="sidebar">
-        <div className="sidebar-brand">Insurance</div>
+        <div className="sidebar-brand">
+          <span className="brand-mark">IM</span>
+          <span>
+            Insurance
+            <small>Management</small>
+          </span>
+        </div>
         <nav className="nav flex-column gap-1">
           {navItems.map((item) => (
             <NavLink
@@ -44,6 +50,7 @@ function AppLayout() {
               key={item.to}
               to={item.to}
             >
+              <span className="sidebar-icon">{item.icon}</span>
               {item.label}
             </NavLink>
           ))}
@@ -56,9 +63,12 @@ function AppLayout() {
             <p className="topbar-eyebrow">Management Portal</p>
             <h1 className="topbar-title">Insurance Management System</h1>
           </div>
-          <button className="btn btn-outline-danger btn-sm" onClick={handleLogout}>
-            Logout
-          </button>
+          <div className="topbar-actions">
+            <span className="user-pill">Active session</span>
+            <button className="btn btn-outline-danger btn-sm" onClick={handleLogout}>
+              Logout
+            </button>
+          </div>
         </header>
 
         <main className="content-area">

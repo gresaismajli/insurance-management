@@ -50,12 +50,13 @@ function DashboardPage() {
   }, []);
 
   const stats = [
-    { label: 'Clients', value: dashboard.stats.totalClients },
-    { label: 'Active Policies', value: dashboard.stats.activePolicies },
-    { label: 'Open Claims', value: dashboard.stats.openClaims },
+    { label: 'Clients', value: dashboard.stats.totalClients, accent: 'blue' },
+    { label: 'Active Policies', value: dashboard.stats.activePolicies, accent: 'green' },
+    { label: 'Open Claims', value: dashboard.stats.openClaims, accent: 'amber' },
     {
       label: 'Completed Payments',
-      value: formatCurrency(dashboard.stats.completedPaymentAmount)
+      value: formatCurrency(dashboard.stats.completedPaymentAmount),
+      accent: 'purple'
     }
   ];
 
@@ -97,7 +98,7 @@ function DashboardPage() {
 
       <section className="stats-grid">
         {stats.map((stat) => (
-          <article className="stat-card" key={stat.label}>
+          <article className={`stat-card ${stat.accent}`} key={stat.label}>
             <span>{stat.label}</span>
             <strong>{isLoading ? '...' : stat.value}</strong>
           </article>
