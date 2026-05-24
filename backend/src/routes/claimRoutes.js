@@ -2,7 +2,7 @@ const express = require('express');
 const { body, param } = require('express-validator');
 
 const claimController = require('../controllers/claimController');
-const { authenticate } = require('../middleware/authMiddleware');
+const { authenticate, authorizeRoles } = require('../middleware/authMiddleware');
 
 const router = express.Router();
 
@@ -32,9 +32,13 @@ router.use(authenticate);
 
 router.get('/', claimController.getClaims);
 router.get('/:id', idValidation, claimController.getClaimById);
-router.post('/', claimValidation, claimController.createClaim);
-router.put('/:id', [...idValidation, ...claimValidation], claimController.updateClaim);
-router.delete('/:id', idValidation, claimController.deleteClaim);
+router.post('/', authorizeRoles('admin', 'agent'), claimValidation, claimController.createClaim);
+router.put(
+  '/:id',
+  authorizeRoles('admin', 'agent'),
+  [...idValidation, ...claimValidation],
+  claimController.updateClaim
+);
+router.delete('/:id', authorizeRoles('admin'), idValidation, claimController.deleteClaim);
 
 module.exports = router;
-

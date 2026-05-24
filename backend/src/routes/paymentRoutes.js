@@ -2,7 +2,7 @@ const express = require('express');
 const { body, param } = require('express-validator');
 
 const paymentController = require('../controllers/paymentController');
-const { authenticate } = require('../middleware/authMiddleware');
+const { authenticate, authorizeRoles } = require('../middleware/authMiddleware');
 
 const router = express.Router();
 
@@ -36,9 +36,13 @@ router.use(authenticate);
 
 router.get('/', paymentController.getPayments);
 router.get('/:id', idValidation, paymentController.getPaymentById);
-router.post('/', paymentValidation, paymentController.createPayment);
-router.put('/:id', [...idValidation, ...paymentValidation], paymentController.updatePayment);
-router.delete('/:id', idValidation, paymentController.deletePayment);
+router.post('/', authorizeRoles('admin', 'agent'), paymentValidation, paymentController.createPayment);
+router.put(
+  '/:id',
+  authorizeRoles('admin', 'agent'),
+  [...idValidation, ...paymentValidation],
+  paymentController.updatePayment
+);
+router.delete('/:id', authorizeRoles('admin'), idValidation, paymentController.deletePayment);
 
 module.exports = router;
-

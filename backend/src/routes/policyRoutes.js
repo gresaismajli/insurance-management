@@ -2,7 +2,7 @@ const express = require('express');
 const { body, param } = require('express-validator');
 
 const policyController = require('../controllers/policyController');
-const { authenticate } = require('../middleware/authMiddleware');
+const { authenticate, authorizeRoles } = require('../middleware/authMiddleware');
 
 const router = express.Router();
 
@@ -43,9 +43,13 @@ router.use(authenticate);
 
 router.get('/', policyController.getPolicies);
 router.get('/:id', idValidation, policyController.getPolicyById);
-router.post('/', policyValidation, policyController.createPolicy);
-router.put('/:id', [...idValidation, ...policyValidation], policyController.updatePolicy);
-router.delete('/:id', idValidation, policyController.deletePolicy);
+router.post('/', authorizeRoles('admin', 'agent'), policyValidation, policyController.createPolicy);
+router.put(
+  '/:id',
+  authorizeRoles('admin', 'agent'),
+  [...idValidation, ...policyValidation],
+  policyController.updatePolicy
+);
+router.delete('/:id', authorizeRoles('admin'), idValidation, policyController.deletePolicy);
 
 module.exports = router;
-

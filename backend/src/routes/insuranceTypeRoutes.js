@@ -2,7 +2,7 @@ const express = require('express');
 const { body, param } = require('express-validator');
 
 const insuranceTypeController = require('../controllers/insuranceTypeController');
-const { authenticate } = require('../middleware/authMiddleware');
+const { authenticate, authorizeRoles } = require('../middleware/authMiddleware');
 
 const router = express.Router();
 
@@ -28,13 +28,23 @@ router.use(authenticate);
 
 router.get('/', insuranceTypeController.getInsuranceTypes);
 router.get('/:id', idValidation, insuranceTypeController.getInsuranceTypeById);
-router.post('/', insuranceTypeValidation, insuranceTypeController.createInsuranceType);
+router.post(
+  '/',
+  authorizeRoles('admin'),
+  insuranceTypeValidation,
+  insuranceTypeController.createInsuranceType
+);
 router.put(
   '/:id',
+  authorizeRoles('admin'),
   [...idValidation, ...insuranceTypeValidation],
   insuranceTypeController.updateInsuranceType
 );
-router.delete('/:id', idValidation, insuranceTypeController.deleteInsuranceType);
+router.delete(
+  '/:id',
+  authorizeRoles('admin'),
+  idValidation,
+  insuranceTypeController.deleteInsuranceType
+);
 
 module.exports = router;
-
