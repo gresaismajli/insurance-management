@@ -6,6 +6,12 @@ Base URL:
 http://localhost:5000/api
 ```
 
+Interactive Swagger documentation:
+
+```text
+http://localhost:5000/api/docs
+```
+
 All protected routes require:
 
 ```http
@@ -194,4 +200,3 @@ Example create/update body:
 
 - `admin`: full access, including delete operations and insurance type management.
 - `agent`: can view, create, and update clients, policies, claims, and payments.
-
