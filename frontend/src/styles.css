@@ -157,6 +157,13 @@ body {
   border-radius: inherit;
 }
 
+.notification {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
 .toolbar {
   display: flex;
   gap: 12px;

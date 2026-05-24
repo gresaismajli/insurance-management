@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import httpClient from '../api/httpClient';
+import Notification from '../components/Notification';
 import PageHeader from './shared/PageHeader';
 
 const emptyForm = {
@@ -36,6 +37,7 @@ function PoliciesPage() {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
 
   async function loadPolicies(searchValue = search, statusValue = status) {
     setIsLoading(true);
@@ -121,8 +123,10 @@ function PoliciesPage() {
     try {
       if (editingPolicy) {
         await httpClient.put(`/policies/${editingPolicy.id}`, payload);
+        setSuccess('Policy updated successfully.');
       } else {
         await httpClient.post('/policies', payload);
+        setSuccess('Policy created successfully.');
       }
 
       closeForm();
@@ -141,6 +145,7 @@ function PoliciesPage() {
 
     try {
       await httpClient.delete(`/policies/${policyId}`);
+      setSuccess('Policy deleted successfully.');
       loadPolicies();
     } catch (requestError) {
       setError(requestError.response?.data?.message || 'Unable to delete policy');
@@ -167,6 +172,7 @@ function PoliciesPage() {
       </PageHeader>
 
       {error && <div className="alert alert-danger">{error}</div>}
+      <Notification message={success} onClose={() => setSuccess('')} />
 
       <section className="panel">
         <form className="toolbar" onSubmit={handleFilterSubmit}>

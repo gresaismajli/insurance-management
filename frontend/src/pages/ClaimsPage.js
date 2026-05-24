@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import httpClient from '../api/httpClient';
+import Notification from '../components/Notification';
 import PageHeader from './shared/PageHeader';
 
 const emptyForm = {
@@ -34,6 +35,7 @@ function ClaimsPage() {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
 
   async function loadClaims(searchValue = search, statusValue = status) {
     setIsLoading(true);
@@ -114,8 +116,10 @@ function ClaimsPage() {
     try {
       if (editingClaim) {
         await httpClient.put(`/claims/${editingClaim.id}`, payload);
+        setSuccess('Claim updated successfully.');
       } else {
         await httpClient.post('/claims', payload);
+        setSuccess('Claim created successfully.');
       }
 
       closeForm();
@@ -134,6 +138,7 @@ function ClaimsPage() {
 
     try {
       await httpClient.delete(`/claims/${claimId}`);
+      setSuccess('Claim deleted successfully.');
       loadClaims();
     } catch (requestError) {
       setError(requestError.response?.data?.message || 'Unable to delete claim');
@@ -160,6 +165,7 @@ function ClaimsPage() {
       </PageHeader>
 
       {error && <div className="alert alert-danger">{error}</div>}
+      <Notification message={success} onClose={() => setSuccess('')} />
 
       <section className="panel">
         <form className="toolbar" onSubmit={handleFilterSubmit}>

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import httpClient from '../api/httpClient';
+import Notification from '../components/Notification';
 import PageHeader from './shared/PageHeader';
 
 const emptyForm = {
@@ -21,6 +22,7 @@ function ClientsPage() {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
 
   async function loadClients(searchValue = search) {
     setIsLoading(true);
@@ -80,8 +82,10 @@ function ClientsPage() {
     try {
       if (editingClient) {
         await httpClient.put(`/clients/${editingClient.id}`, formData);
+        setSuccess('Client updated successfully.');
       } else {
         await httpClient.post('/clients', formData);
+        setSuccess('Client created successfully.');
       }
 
       closeForm();
@@ -100,6 +104,7 @@ function ClientsPage() {
 
     try {
       await httpClient.delete(`/clients/${clientId}`);
+      setSuccess('Client deleted successfully.');
       loadClients();
     } catch (requestError) {
       setError(requestError.response?.data?.message || 'Unable to delete client');
@@ -125,6 +130,7 @@ function ClientsPage() {
       </PageHeader>
 
       {error && <div className="alert alert-danger">{error}</div>}
+      <Notification message={success} onClose={() => setSuccess('')} />
 
       <section className="panel">
         <form className="toolbar" onSubmit={handleSearchSubmit}>

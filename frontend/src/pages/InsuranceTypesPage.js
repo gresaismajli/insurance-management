@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import httpClient from '../api/httpClient';
+import Notification from '../components/Notification';
 import PageHeader from './shared/PageHeader';
 
 const emptyForm = {
@@ -25,6 +26,7 @@ function InsuranceTypesPage() {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
 
   async function loadInsuranceTypes(searchValue = search) {
     setIsLoading(true);
@@ -91,8 +93,10 @@ function InsuranceTypesPage() {
     try {
       if (editingType) {
         await httpClient.put(`/insurance-types/${editingType.id}`, payload);
+        setSuccess('Insurance type updated successfully.');
       } else {
         await httpClient.post('/insurance-types', payload);
+        setSuccess('Insurance type created successfully.');
       }
 
       closeForm();
@@ -113,6 +117,7 @@ function InsuranceTypesPage() {
 
     try {
       await httpClient.delete(`/insurance-types/${typeId}`);
+      setSuccess('Insurance type deleted successfully.');
       loadInsuranceTypes();
     } catch (requestError) {
       setError(
@@ -140,6 +145,7 @@ function InsuranceTypesPage() {
       </PageHeader>
 
       {error && <div className="alert alert-danger">{error}</div>}
+      <Notification message={success} onClose={() => setSuccess('')} />
 
       <section className="panel">
         <form className="toolbar" onSubmit={handleSearchSubmit}>

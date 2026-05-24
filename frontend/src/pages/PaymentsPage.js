@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import httpClient from '../api/httpClient';
+import Notification from '../components/Notification';
 import PageHeader from './shared/PageHeader';
 
 const emptyForm = {
@@ -33,6 +34,7 @@ function PaymentsPage() {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
 
   async function loadPayments(searchValue = search, statusValue = status) {
     setIsLoading(true);
@@ -111,8 +113,10 @@ function PaymentsPage() {
     try {
       if (editingPayment) {
         await httpClient.put(`/payments/${editingPayment.id}`, payload);
+        setSuccess('Payment updated successfully.');
       } else {
         await httpClient.post('/payments', payload);
+        setSuccess('Payment created successfully.');
       }
 
       closeForm();
@@ -131,6 +135,7 @@ function PaymentsPage() {
 
     try {
       await httpClient.delete(`/payments/${paymentId}`);
+      setSuccess('Payment deleted successfully.');
       loadPayments();
     } catch (requestError) {
       setError(requestError.response?.data?.message || 'Unable to delete payment');
@@ -157,6 +162,7 @@ function PaymentsPage() {
       </PageHeader>
 
       {error && <div className="alert alert-danger">{error}</div>}
+      <Notification message={success} onClose={() => setSuccess('')} />
 
       <section className="panel">
         <form className="toolbar" onSubmit={handleFilterSubmit}>
